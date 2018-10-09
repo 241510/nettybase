@@ -3,46 +3,49 @@ package netty.handler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import netty.packet.Packet;
+import netty.packet.request.command.LoginRequestPacket;
+import netty.packet.validate.Validator;
+import netty.protocol.SerializeAlgorithmSign;
+import netty.util.converter.BinaryPacketConverter;
 
-import java.nio.charset.Charset;
-import java.util.Date;
-
-/**
- * @author gaoyanwei
- * @date 2018/9/27.
- */
 public class FirstClientHandler extends ChannelInboundHandlerAdapter{
 
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
-		System.out.println(new Date()+"客户端写数据。。。");
+        //获取数据
+        /*String message = "hello server";
+        ByteBuf buffer = ByteBufObtain.getByteBuf(ctx,message);*/
 
-		//获取数据
-		ByteBuf buffer = getByteBuffer(ctx);
+        //客户端传递登录的指令
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+        loginRequestPacket.setUid("001");
+        loginRequestPacket.setUsername("username");
+        loginRequestPacket.setPassword("password");
 
-		//写数据到客户端连接通道
-		ctx.channel().writeAndFlush(buffer);
+        ByteBuf buffer = BinaryPacketConverter.encode(loginRequestPacket, SerializeAlgorithmSign.json);
 
+        //获取连接ID
+        ctx.channel().id();
+        //写数据
+        ctx.channel().writeAndFlush(buffer);
 
-	}
+    }
 
-	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		System.out.println(new Date()+"客户端收到服务端信息："+((ByteBuf) msg).toString(Charset.forName("utf-8")));
-	}
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+       /* ByteBuf buf = (ByteBuf) msg;
+        System.out.println(new Date()+":客户端接收到服务端传回消息:"+buf.toString(Charset.forName("utf-8")));*/
 
-	private ByteBuf getByteBuffer(ChannelHandlerContext ctx) {
+       ByteBuf recBuf = (ByteBuf)msg;
+       //解码
+        Packet packet = BinaryPacketConverter.decode(recBuf);
+        if (Validator.validate(packet)){
+            System.out.println("accept server response success");
+        }else{
+            System.out.println("accept server response failed");
+        }
 
-		//获取二进制抽象 byteBuf
-		ByteBuf buffer = ctx.alloc().buffer();
-
-		//准备数据，字符串的编码格式为utf-8
-		String message = "你好，世界!";
-		byte[] bytes = message.getBytes(Charset.forName("utf-8"));
-
-		//填充数据到byteBuf
-		buffer.writeBytes(bytes);
-		return buffer;
-	}
+    }
 }

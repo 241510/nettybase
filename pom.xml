@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>netty</groupId>
-    <artifactId>netty-base</artifactId>
+    <groupId>io.netty</groupId>
+    <artifactId>nettyBase</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
@@ -20,14 +20,21 @@
         </plugins>
     </build>
 
-    <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+    <dependencies>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.25.Final</version>
+            <version>4.1.6.Final</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
+
 
     </dependencies>
 

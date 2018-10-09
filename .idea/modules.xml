@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/nettybase.iml" filepath="$PROJECT_DIR$/nettybase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nettyBase.iml" filepath="$PROJECT_DIR$/nettyBase.iml" />
     </modules>
   </component>
 </project>
