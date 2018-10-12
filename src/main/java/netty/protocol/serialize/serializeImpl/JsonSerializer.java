@@ -1,8 +1,9 @@
-package netty.protocol.serialize;
+package netty.protocol.serialize.serializeImpl;
 
 import com.alibaba.fastjson.JSON;
 import netty.packet.Packet;
-import netty.protocol.SerializeAlgorithmSign;
+import netty.protocol.serialize.Serializer;
+import netty.protocol.serializeAlgorithm.SerializeAlgorithmSign;
 
 public class JsonSerializer implements Serializer {
 

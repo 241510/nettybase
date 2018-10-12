@@ -1,4 +1,4 @@
-package netty.protocol;
+package netty.protocol.serializeAlgorithm;
 
 public interface SerializeAlgorithmSign {
 

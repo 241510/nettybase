@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="nettyBase" />
+        <module name="nettybase" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="nettyBase" target="1.8" />
+      <module name="nettybase" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

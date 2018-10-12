@@ -1,12 +1,20 @@
 package netty.client;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import netty.handler.FirstClientHandler;
+import netty.packet.request.command.MessageRequestPacket;
+import netty.protocol.serializeAlgorithm.SerializeAlgorithmSign;
+import netty.util.LoginUtil;
+import netty.util.converter.BinaryPacketConverter;
 
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,7 +53,13 @@ public class NettyClient {
         bootstrap.connect(ip, port).addListener(future -> {
 
             if (future.isSuccess()) {
-                System.out.println("connect is succeed");
+
+				System.out.println("connect is succeed");
+
+				Channel channel = ((ChannelFuture)future).channel();
+				//打开控制台线程
+				startConsoleThread(channel);
+
             } else if (retry == 0) {
                 System.out.println("retry num is zero , abandon build connect");
             } else {
@@ -61,4 +75,22 @@ public class NettyClient {
         });
 
     }
+
+	private static void startConsoleThread(Channel channel) {
+
+    	new Thread(() -> {
+			while (!Thread.interrupted()){
+				if (LoginUtil.hasMark(channel)){
+					System.out.println("向服务端传输信息。。。。。。");
+					Scanner scanner = new Scanner(System.in);
+					String message = scanner.nextLine();
+
+					MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
+					messageRequestPacket.setMessage(message);
+					ByteBuf messageBuf = BinaryPacketConverter.encode(messageRequestPacket, SerializeAlgorithmSign.json);
+					channel.writeAndFlush(messageBuf);
+				}
+			}
+		}).start();
+	}
 }

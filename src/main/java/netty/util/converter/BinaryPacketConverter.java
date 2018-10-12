@@ -5,7 +5,9 @@ import io.netty.buffer.ByteBufAllocator;
 import netty.exception.NettyException;
 import netty.packet.request.command.LoginRequestPacket;
 import netty.packet.Packet;
+import netty.packet.request.command.MessageRequestPacket;
 import netty.packet.response.command.LoginResponsePacket;
+import netty.packet.response.command.MessageResponsePacket;
 import netty.util.selector.CommandTypeSelector;
 import netty.util.selector.SerializeTypeSelector;
 import netty.protocol.serialize.Serializer;
@@ -82,6 +84,10 @@ public class BinaryPacketConverter {
 
         if (packet instanceof LoginResponsePacket)
             return packet.getClass();
+
+        if (packet instanceof MessageRequestPacket) return packet.getClass();
+
+		if (packet instanceof MessageResponsePacket) return packet.getClass();
 
         throw new NettyException("packet type not match");
 
