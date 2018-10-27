@@ -9,7 +9,25 @@ import netty.protocol.command.Command;
  */
 public class MessageResponsePacket extends Packet{
 
+	private String formUserId;
+	private String fromUserName;
 	private String message;
+
+	public String getFormUserId() {
+		return formUserId;
+	}
+
+	public void setFormUserId(String formUserId) {
+		this.formUserId = formUserId;
+	}
+
+	public String getFromUserName() {
+		return fromUserName;
+	}
+
+	public void setFromUserName(String fromUserName) {
+		this.fromUserName = fromUserName;
+	}
 
 	public String getMessage() {
 		return message;

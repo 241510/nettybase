@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2018/10/10.
@@ -6,6 +7,9 @@ import java.math.BigDecimal;
 public class BigDecialTest {
 
 	public static void main(String[] args){
-		System.out.println(BigDecimal.ZERO.setScale(6));
+
+
+		String uuid = UUID.randomUUID().toString().replace("-","");
+		System.out.println(uuid);
 	}
 }

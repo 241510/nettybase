@@ -5,6 +5,7 @@ import netty.packet.Packet;
 import netty.packet.request.command.LoginRequestPacket;
 import netty.packet.request.command.MessageRequestPacket;
 import netty.packet.response.command.LoginResponsePacket;
+import netty.packet.response.command.MessageResponsePacket;
 import netty.packet.response.status.ResponseStatus;
 import netty.util.LoginUtil;
 
@@ -25,6 +26,10 @@ public class Validator {
         }
 		//传递信息报验证
 		if (packet instanceof MessageRequestPacket){
+			//验证逻辑
+			return true;
+		}
+		if (packet instanceof MessageResponsePacket){
 			//验证逻辑
 			return true;
 		}

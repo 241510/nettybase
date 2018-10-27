@@ -31,12 +31,12 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
 		loginRequestPacket.setUsername("username");
 		loginRequestPacket.setPassword("password");
 		System.out.println("向服务端发送登录请求");
-		ByteBuf buffer = BinaryPacketConverter.encode(loginRequestPacket, SerializeAlgorithmSign.json);
+		//ByteBuf buffer = BinaryPacketConverter.encode(loginRequestPacket, SerializeAlgorithmSign.json);
 
 		//获取连接ID
 		ctx.channel().id();
 		//写数据
-		ctx.channel().writeAndFlush(buffer);
+		//ctx.channel().writeAndFlush(buffer);
 
 	}
 

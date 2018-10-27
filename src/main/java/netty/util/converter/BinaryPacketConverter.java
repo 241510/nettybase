@@ -17,10 +17,10 @@ public class BinaryPacketConverter {
     //魔数，用于识别
     private static final int MAGIC_NUMBER = 0x12345678;
 
-    public static ByteBuf encode(Packet packet, Byte sign) {
+    public static ByteBuf encode(Packet packet,ByteBuf buf, Byte sign) {
 
         //获取二进制抽象结构（io类型的ByteBuf）
-        ByteBuf buf = ByteBufAllocator.DEFAULT.ioBuffer();
+        //ByteBuf buf = ByteBufAllocator.DEFAULT.ioBuffer();
 
         //将要传输的主体数据做序列化
         byte[] bytes = SerializeTypeSelector.selectSerializeStrategy(sign).serialize(packet);
@@ -78,9 +78,8 @@ public class BinaryPacketConverter {
      */
     private static Class<? extends Packet> getPacketType(Byte command) {
         Packet packet = CommandTypeSelector.getPacket(command);
-        if (packet instanceof LoginRequestPacket){
+        if (packet instanceof LoginRequestPacket)
             return packet.getClass();
-        }
 
         if (packet instanceof LoginResponsePacket)
             return packet.getClass();

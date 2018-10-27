@@ -5,7 +5,8 @@ import netty.protocol.command.Command;
 
 public class LoginResponsePacket extends Packet{
 
-
+	private String userId;
+	private String userName;
     private String status;
     private String message;
 
@@ -16,7 +17,23 @@ public class LoginResponsePacket extends Packet{
 
     }
 
-    public String getStatus() {
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getStatus() {
         return status;
     }
 

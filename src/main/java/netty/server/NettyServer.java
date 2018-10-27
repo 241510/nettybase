@@ -5,7 +5,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import netty.handler.FirstServerHandler;
+import netty.handler.ActualHandler.*;
 
 public class NettyServer {
 
@@ -19,7 +19,12 @@ public class NettyServer {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(new FirstServerHandler());
+                    	//拆包器
+                    	ch.pipeline().addLast(new Spliter());
+                        ch.pipeline().addLast(new PacketDecodeHandler());
+                        ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new PacketEncodeHandler());
                     }
                 });
 
@@ -34,7 +39,6 @@ public class NettyServer {
                 System.out.println("bind port failed");
                 bind(serverBootstrap, port + 1);
             }
-
         });
     }
 }

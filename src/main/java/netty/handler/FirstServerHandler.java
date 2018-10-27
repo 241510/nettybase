@@ -47,14 +47,14 @@ public class FirstServerHandler extends ChannelInboundHandlerAdapter {
 				System.out.println("client request handle failed");
 			}
 			//二进制数据包组装
-			buf = BinaryPacketConverter.encode(responsePacket, SerializeAlgorithmSign.json);
+			//buf = BinaryPacketConverter.encode(responsePacket, SerializeAlgorithmSign.json);
         }else if (packet instanceof MessageRequestPacket){
         	MessageRequestPacket requestPacket = (MessageRequestPacket) packet;
 			System.out.println(new Date() + ": 收到客户端消息: " + requestPacket.getMessage());
 
 			MessageResponsePacket responsePacket = new MessageResponsePacket();
 			responsePacket.setMessage("服务端回复【"+requestPacket.getMessage()+"】");
-			buf = BinaryPacketConverter.encode(responsePacket, SerializeAlgorithmSign.json);
+			//buf = BinaryPacketConverter.encode(responsePacket, SerializeAlgorithmSign.json);
 		}
 
         //发送客户端
