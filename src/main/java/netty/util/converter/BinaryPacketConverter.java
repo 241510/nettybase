@@ -17,18 +17,18 @@ public class BinaryPacketConverter {
     //魔数，用于识别
     private static final int MAGIC_NUMBER = 0x12345678;
 
-    public static ByteBuf encode(Packet packet,ByteBuf buf, Byte sign) {
+    public static ByteBuf encode(Packet packet,ByteBuf buf, Byte serializeAlgorithmSign) {
 
         //获取二进制抽象结构（io类型的ByteBuf）
         //ByteBuf buf = ByteBufAllocator.DEFAULT.ioBuffer();
 
         //将要传输的主体数据做序列化
-        byte[] bytes = SerializeTypeSelector.selectSerializeStrategy(sign).serialize(packet);
+        byte[] bytes = SerializeTypeSelector.selectSerializer(serializeAlgorithmSign).serialize(packet);
 
         //拼装二进制协议数据包内容
         buf.writeInt(MAGIC_NUMBER);
         buf.writeByte(packet.getVersion());
-        buf.writeByte(sign);
+        buf.writeByte(serializeAlgorithmSign);
         buf.writeByte(packet.getCommand());
         buf.writeInt(bytes.length);
         buf.writeBytes(bytes);
@@ -68,7 +68,7 @@ public class BinaryPacketConverter {
      * @return
      */
     private static Serializer getSerializer(Byte serializeAlgorithmSign) {
-        return SerializeTypeSelector.selectSerializeStrategy(serializeAlgorithmSign);
+        return SerializeTypeSelector.selectSerializer(serializeAlgorithmSign);
     }
 
     /**
@@ -77,18 +77,11 @@ public class BinaryPacketConverter {
      * @return
      */
     private static Class<? extends Packet> getPacketType(Byte command) {
-        Packet packet = CommandTypeSelector.getPacket(command);
-        if (packet instanceof LoginRequestPacket)
-            return packet.getClass();
-
-        if (packet instanceof LoginResponsePacket)
-            return packet.getClass();
-
-        if (packet instanceof MessageRequestPacket) return packet.getClass();
-
-		if (packet instanceof MessageResponsePacket) return packet.getClass();
-
-        throw new NettyException("packet type not match");
+        Class clazz= CommandTypeSelector.getPacket(command);
+        if (clazz == null){
+			throw new NettyException("packet type not match");
+		}
+		return clazz;
 
     }
 }

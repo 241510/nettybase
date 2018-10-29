@@ -5,9 +5,7 @@ import netty.protocol.serialize.serializeImpl.JsonSerializer;
 
 public interface Serializer {
 
-    Serializer defaultSerializer = new JsonSerializer();
-
-    /**
+	/**
      * 获取序列化算法标识
      */
     Byte getSerializeAlgorithm();

@@ -11,12 +11,24 @@ public class SerializeTypeSelector {
     private static final ConcurrentHashMap<Byte, Serializer> serializeMap = new ConcurrentHashMap<>();
 
     //定义序列化策略
-    private static final JsonSerializer jsonSerialize = new JsonSerializer();
+    private static final JsonSerializer defaultSerializer = new JsonSerializer();
+
     static {
-        serializeMap.put(SerializeAlgorithmSign.json,jsonSerialize);
+        serializeMap.put(SerializeAlgorithmSign.json,defaultSerializer);
     }
 
-    public static Serializer selectSerializeStrategy(Byte serializeAlgorithmSign){
+	public static Serializer selectSerializer(){
+    	return selectSerializeStrategy(null);
+	}
+
+	public static Serializer selectSerializer(Byte serializeAlgorithmSign){
+		return selectSerializeStrategy(serializeAlgorithmSign);
+	}
+
+    private static Serializer selectSerializeStrategy(Byte serializeAlgorithmSign){
+		if(serializeAlgorithmSign == null){
+			return defaultSerializer;
+		}
         return serializeMap.get(serializeAlgorithmSign);
     }
 }

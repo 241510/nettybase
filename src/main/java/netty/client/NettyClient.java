@@ -8,6 +8,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import netty.console.command.LoginConsoleCommand;
+import netty.console.manager.ConsoleCommandManager;
 import netty.handler.ActualHandler.*;
 import netty.packet.request.command.LoginRequestPacket;
 import netty.packet.request.command.MessageRequestPacket;
@@ -44,6 +46,7 @@ public class NettyClient {
 						ch.pipeline().addLast(new Spliter());
 						ch.pipeline().addLast(new PacketDecodeHandler());
 						ch.pipeline().addLast(new LoginResponseHandler());
+						ch.pipeline().addLast(new CreateChatGroupResponseHandler());
 						ch.pipeline().addLast(new MessageResponseHandler());
 						ch.pipeline().addLast(new PacketEncodeHandler());
 					}
@@ -83,34 +86,18 @@ public class NettyClient {
 
 	private static void startConsoleThread(Channel channel) {
 
+		ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+		LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
 		Scanner scanner = new Scanner(System.in);
-		LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
 
 		new Thread(() -> {
 			while (!Thread.interrupted()) {
 				if (!SessionUtil.hasLogin(channel)) {
-					System.out.println("输入用户名登录");
-					String userName = scanner.nextLine();
-
-					loginRequestPacket.setUsername(userName);
-					loginRequestPacket.setPassword("pwd");//默认
-
-					channel.writeAndFlush(loginRequestPacket);
-					//等待服务端认证登录信息
-					waitForLoginResponse();
+					loginConsoleCommand.exec(scanner,channel);
 				}else{
-					String toUserId = scanner.next();
-					String message = scanner.next();
-					channel.writeAndFlush(new MessageRequestPacket(toUserId,message));
+					consoleCommandManager.exec(scanner,channel);
 				}
 			}
 		}).start();
-	}
-
-	private static void waitForLoginResponse() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-		}
 	}
 }
