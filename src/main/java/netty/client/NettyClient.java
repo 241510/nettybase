@@ -47,6 +47,7 @@ public class NettyClient {
 						ch.pipeline().addLast(new PacketDecodeHandler());
 						ch.pipeline().addLast(new LoginResponseHandler());
 						ch.pipeline().addLast(new CreateChatGroupResponseHandler());
+						ch.pipeline().addLast(new JoinChatGroupResponseHandler());
 						ch.pipeline().addLast(new MessageResponseHandler());
 						ch.pipeline().addLast(new PacketEncodeHandler());
 					}

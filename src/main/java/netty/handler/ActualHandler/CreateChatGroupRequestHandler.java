@@ -37,11 +37,16 @@ public class CreateChatGroupRequestHandler extends SimpleChannelInboundHandler<C
 			}
 		}
 
+
 		CreateChatGroupResponsePacket responsePacket = new CreateChatGroupResponsePacket();
+		String groupId = RandomGIdGenerateUtil.getGId();
 		responsePacket.setHandleStatus(true);
-		responsePacket.setGroupId(RandomGIdGenerateUtil.getGId());
+		responsePacket.setGroupId(groupId);
 		responsePacket.setUserNameList(userNameList);
 		channelGroup.writeAndFlush(responsePacket);
+
+		//将群ID与群相映射
+		SessionUtil.putChannelGroup(groupId,channelGroup);
 
 		System.out.print("群创建成功，id 为[" + responsePacket.getGroupId() + "], ");
 		System.out.println("群里面有：" + responsePacket.getUserNameList());

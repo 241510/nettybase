@@ -24,6 +24,7 @@ public class NettyServer {
                         ch.pipeline().addLast(new PacketDecodeHandler());
                         ch.pipeline().addLast(new LoginRequestHandler());
 						ch.pipeline().addLast(new CreateChatGroupRequestHandler());
+						ch.pipeline().addLast(new JoinChatGroupRequestHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new PacketEncodeHandler());
                     }
