@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import netty.console.command.ConsoleCommand;
 import netty.console.command.CreateChatGroupConsoleCommand;
 import netty.console.command.JoinChatGroupConsoleCommand;
+import netty.console.command.QuitChatGroupConsoleCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class ConsoleCommandManager implements ConsoleCommand{
 		//consoleCommandMap.put("logout"new LogoutConsoleCommand());
 		consoleCommandMap.put("createChatGroup",new CreateChatGroupConsoleCommand());
 		consoleCommandMap.put("joinChatGroup",new JoinChatGroupConsoleCommand());
+		consoleCommandMap.put("quitChatGroup",new QuitChatGroupConsoleCommand());
 	}
 
 	@Override

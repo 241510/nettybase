@@ -1,4 +1,4 @@
-package netty.handler.ActualHandler;
+package netty.handler.ActualHandler.request;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -14,8 +14,7 @@ import netty.util.SessionUtil;
  */
 public class JoinChatGroupRequestHandler extends SimpleChannelInboundHandler<JoinChatGroupRequestPacket> {
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx,
-			JoinChatGroupRequestPacket request) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, JoinChatGroupRequestPacket request) throws Exception {
 
 		String groupId = request.getGroupId();
 		ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
@@ -24,7 +23,6 @@ public class JoinChatGroupRequestHandler extends SimpleChannelInboundHandler<Joi
 		JoinChatGroupResponsePacket responsePacket = new JoinChatGroupResponsePacket();
 		responsePacket.setStatus(ResponseStatus.SUCCESS);
 		responsePacket.setGroupId(groupId);
-		ctx.channel().writeAndFlush(responsePacket);
-
+		channelGroup.writeAndFlush(responsePacket);
 	}
 }

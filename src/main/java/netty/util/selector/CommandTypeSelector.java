@@ -1,34 +1,34 @@
 package netty.util.selector;
 
-import netty.packet.request.command.CreateChatGroupRequestPacket;
-import netty.packet.request.command.JoinChatGroupRequestPacket;
-import netty.packet.request.command.LoginRequestPacket;
 import netty.packet.Packet;
-import netty.packet.request.command.MessageRequestPacket;
-import netty.packet.response.command.CreateChatGroupResponsePacket;
-import netty.packet.response.command.JoinChatGroupResponsePacket;
-import netty.packet.response.command.LoginResponsePacket;
-import netty.packet.response.command.MessageResponsePacket;
+import netty.packet.request.command.*;
+import netty.packet.response.command.*;
 import netty.protocol.command.Command;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandTypeSelector {
 
-    private static final ConcurrentHashMap<Byte,Class<? extends Packet>> commandMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Byte,Class<? extends Packet>> commandTypeMap = new ConcurrentHashMap<>();
 
     static {
-        commandMap.put(Command.LOGIN_REQUEST,LoginRequestPacket.class);
-        commandMap.put(Command.LOGIN_RESPONSE,LoginResponsePacket.class);
-        commandMap.put(Command.MESSAGE_REQUEST,MessageRequestPacket.class);
-        commandMap.put(Command.MESSAGE_RESPONSE,MessageResponsePacket.class);
-        commandMap.put(Command.CREATE_CHAT_GROUP_REQUEST,CreateChatGroupRequestPacket.class);
-        commandMap.put(Command.CREATE_CHAT_GROUP_RESPONSE, CreateChatGroupResponsePacket.class);
-        commandMap.put(Command.JOIN_CHAT_GROUP_REQUEST, JoinChatGroupRequestPacket.class);
-        commandMap.put(Command.JOIN_CHAT_GROUP_RESPONSE, JoinChatGroupResponsePacket.class);
+        commandTypeMap.put(Command.LOGIN_REQUEST,LoginRequestPacket.class);
+        commandTypeMap.put(Command.LOGIN_RESPONSE,LoginResponsePacket.class);
+        commandTypeMap.put(Command.MESSAGE_REQUEST,MessageRequestPacket.class);
+        commandTypeMap.put(Command.MESSAGE_RESPONSE,MessageResponsePacket.class);
+        commandTypeMap.put(Command.CREATE_CHAT_GROUP_REQUEST,CreateChatGroupRequestPacket.class);
+        commandTypeMap.put(Command.CREATE_CHAT_GROUP_RESPONSE, CreateChatGroupResponsePacket.class);
+        commandTypeMap.put(Command.JOIN_CHAT_GROUP_REQUEST, JoinChatGroupRequestPacket.class);
+        commandTypeMap.put(Command.JOIN_CHAT_GROUP_RESPONSE, JoinChatGroupResponsePacket.class);
+        commandTypeMap.put(Command.QUIT_CHAT_GROUP_REQUEST, QuitChatGroupRequestPacket.class);
+        commandTypeMap.put(Command.QUIT_CHAT_GROUP_RESPONSE, QuitChatGroupResponsePacket.class);
+        commandTypeMap.put(Command.LIST_CHAT_GROUP_MEMBERS_REQUEST,ListChatGroupMembersRequestPacket.class);
+        commandTypeMap.put(Command.LIST_CHAT_GROUP_MEMBERS_RESPONSE,ListChatGroupMembersResponsePacket.class);
+		commandTypeMap.put(Command.CHAT_GROUP_MESSAGE_REQUEST,ChatGroupMessageRequestPacket.class);
+		commandTypeMap.put(Command.CHAT_GROUP_MESSAGE_RESPONSE,ChatGroupMessageResponsePacket.class);
     }
 
     public static Class<? extends Packet> getPacket(Byte command){
-        return commandMap.get(command);
+        return commandTypeMap.get(command);
     }
  }

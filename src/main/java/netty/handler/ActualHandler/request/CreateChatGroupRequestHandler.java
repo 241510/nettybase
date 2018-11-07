@@ -1,4 +1,4 @@
-package netty.handler.ActualHandler;
+package netty.handler.ActualHandler.request;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

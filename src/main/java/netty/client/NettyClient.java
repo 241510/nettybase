@@ -11,8 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import netty.console.command.LoginConsoleCommand;
 import netty.console.manager.ConsoleCommandManager;
 import netty.handler.ActualHandler.*;
-import netty.packet.request.command.LoginRequestPacket;
-import netty.packet.request.command.MessageRequestPacket;
+import netty.handler.ActualHandler.response.*;
 import netty.util.SessionUtil;
 
 import java.util.Scanner;
@@ -43,12 +42,25 @@ public class NettyClient {
 				.handler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					public void initChannel(SocketChannel ch) {
+						//拆包器
 						ch.pipeline().addLast(new Spliter());
+						//数据包解码处理器
 						ch.pipeline().addLast(new PacketDecodeHandler());
+						//登录响应处理器
 						ch.pipeline().addLast(new LoginResponseHandler());
+						//创建群聊响应处理器
 						ch.pipeline().addLast(new CreateChatGroupResponseHandler());
+						//加入聊天群响应处理器
 						ch.pipeline().addLast(new JoinChatGroupResponseHandler());
+						//退出群聊响应处理器
+						ch.pipeline().addLast(new QuitChatGroupResponseHandler());
+						//获取群聊中的成员列表处理器
+						ch.pipeline().addLast(new ListChatGroupMembersResponseHandler());
+						//群聊消息响应处理器
+						ch.pipeline().addLast(new ChatGroupMessageResponseHandler());
+						//消息接收处理器
 						ch.pipeline().addLast(new MessageResponseHandler());
+						//数据包编码处理器
 						ch.pipeline().addLast(new PacketEncodeHandler());
 					}
 				});
